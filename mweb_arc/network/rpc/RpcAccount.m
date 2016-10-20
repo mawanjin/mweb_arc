@@ -12,11 +12,15 @@
 @implementation RpcAccount
 
 - (void)getAccountInfo{
-    [[HttpClient sharedClient] requestWithUrl:@"http://www.baidu.com" params:nil httpMethod:@"get" delegate:self nTag:0 sKey:@"accountInfo"];
+    [[HttpClient sharedClient] requestWithUrl:@"http://wwww.baidu.com" params:nil httpMethod:@"get" sueccess:^(id response) {
+        NSLog(@"callback of getAccountInfo. response is %@",response);
+    } fail:^(NSError *error) {
+        NSLog(@"callback of getAccountInfo. response is %@",error);
+    }];
 }
 
 - (void)getAccountINFoByParams:(NSString *) url params:(NSDictionary *)params httpMethod:(NSString *)httpMethod delegate:(id<HttpClientDelegate>) delegate{
-    [[HttpClient sharedClient] requestWithUrl:url params:params httpMethod:httpMethod delegate:delegate];
+
 }
 
 - (void) requestDidFinishWithData:(NSDictionary *)data urlString:(NSString *)urlString nTag:(NSInteger)nTag sKey:(NSString *)sKey{

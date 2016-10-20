@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "HttpClient.h"
 #import "AFURLSessionManager.h"
+
+
+
 @interface HttpRequestItem : NSObject
 
 @property (nonatomic,strong) NSURLSessionDataTask *task;
@@ -16,7 +19,9 @@
 @property (nonatomic,copy) NSString *urlString;
 @property (nonatomic,assign) NSInteger nTag;
 @property (nonatomic,copy) NSString *sKey;
-@property (nonatomic,assign)id<HttpClientDelegate> delegate;
+@property (nonatomic,weak) id<HttpClientDelegate> delegate;
+@property (nonatomic,weak) HttpResponseSuccess success;
+@property (nonatomic,weak) HttpResponseFail fail;
 
 -(void) requestWithUrlString:(NSString *)urlString params:(NSDictionary *)params httpMethod:(NSString *)httpMethod;
 

@@ -28,15 +28,16 @@
     __weak __typeof(self) weakSelf = self;
     //do request
     NSURLSessionDataTask *dataTask = [manager dataTaskWithRequest:request completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
-        weakSelf.responseObject = request;
+        weakSelf.responseObject = responseObject;
         if(error){
             NSLog(@"Error: %@",error);
         }else{
-            //NSLog(@"%@. %@",response,responseObject);
             NSHTTPURLResponse *res = (NSHTTPURLResponse*)response;
             NSLog(@"status_code:%d",res.statusCode);
             NSLog(@"headers:%@",res.allHeaderFields);
-        }
+        }        
+
+        [[HttpClient sharedClient] performSelector:@selector(didFinishWithItem:error:) withObject:weakSelf withObject:error];
         
     }];
     

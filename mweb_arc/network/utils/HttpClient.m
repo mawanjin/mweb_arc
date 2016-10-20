@@ -25,20 +25,28 @@
 }
 
 
-- (NSUInteger) requestWithUrl:(NSString *)urlString params:(NSDictionary *)params httpMethod:(NSString *)httpMethod delegate:(id<HttpClientDelegate>)delegate{
-    return [self requestWithUrl:urlString params:params httpMethod:httpMethod delegate:delegate nTag:0 sKey:nil];
+- (NSUInteger) requestWithUrl:(NSString *)urlString params:(NSDictionary *)params httpMethod:(NSString *)httpMethod sueccess:(HttpResponseSuccess) success fail:(HttpResponseFail) fail{
+    return [self requestWithUrl:urlString params:params httpMethod:httpMethod nTag:0 sKey:nil success:success fail:fail];
+}
+
+- (NSUInteger) requestWithUrl:(NSString *)urlString params:(NSDictionary *)params httpMethod:(NSString *)httpMethod nTag:(NSInteger)nTag success:(HttpResponseSuccess) success fail:(HttpResponseFail) fail{
+    return [self requestWithUrl:urlString params:params httpMethod:httpMethod nTag:nTag sKey:@"" success:success fail:fail];
+}
+
+- (NSUInteger) requestWithUrl:(NSString *)urlString params:(NSDictionary *)params httpMethod:(NSString *)httpMethod sKey:(NSString *) sKey success:(HttpResponseSuccess) success fail:(HttpResponseFail) fail{
+    return [self requestWithUrl:urlString params:params httpMethod:httpMethod nTag:0 sKey:sKey success:success fail:fail];
 }
 
 - (NSUInteger)requestWithUrl:(NSString *)urlString
                       params:(NSDictionary *)params
                   httpMethod:(NSString *)httpMethod
-                    delegate:(id<HttpClientDelegate>)delegate
                         nTag:(NSInteger)nTag
-                        sKey:(NSString *)sKey{
+                        sKey:(NSString *)sKey success:(HttpResponseSuccess)success fail:(HttpResponseFail) fail{
     HttpRequestItem *item = [[HttpRequestItem alloc] init];
-    item.delegate = delegate;
     item.nTag = nTag;
     item.sKey = sKey;
+    item.success = success;
+    item.fail = fail;
     [item requestWithUrlString:urlString params:params httpMethod:httpMethod];
     
     NSUInteger hashValue = [item hash];
@@ -46,13 +54,13 @@
     return hashValue;
 }
 
+
 - (BOOL)cancelRequestWithHashValue:(NSInteger)hashValue{
     HttpRequestItem *item = [_items objectForKey:@(hashValue)];
     if(item){
         [item.task cancel];
         [_items removeObjectForKey:@(hashValue)];
     }
-    
     return YES;
 }
 
@@ -68,15 +76,13 @@
 - (void) didFinishWithItem:(HttpRequestItem *)item error:(NSError *)error{
     NSLog(@"method didFinishWithItem called.");
     if(error == nil){
-        NSDictionary *data = [NSJSONSerialization JSONObjectWithData:item.responseObject options:NSJSONReadingMutableContainers error:nil];
-        if(item.delegate && [item.delegate respondsToSelector:@selector(requestDidFinishWithData:urlString:nTag:sKey:)]){
-            [item.delegate requestDidFinishWithData:data urlString:item.urlString nTag:item.nTag sKey:item.sKey];
-        }
+        NSString *rs = [[NSString alloc] initWithData:item.responseObject encoding:NSUTF8StringEncoding];
+        item.success(rs);
     }else{
-        if(item.delegate && [item.delegate respondsToSelector:@selector(requestDidFinishWithData:urlString:nTag:sKey:)]){
-            [item.delegate requestDidErrorWithData:error urlString:item.urlString nTag:item.nTag sKey:item.sKey];
-        }
+        item.fail(error);
     }
+    
+    [self removeItem:item];
 }
 
 @end

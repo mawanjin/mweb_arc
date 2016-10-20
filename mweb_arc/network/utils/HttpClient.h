@@ -7,6 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+
+typedef void(^HttpResponseSuccess)(id response);
+typedef void(^HttpResponseFail)(NSError *error);
+
 @class HttpRequestItem;
 
 @protocol HttpClientDelegate <NSObject>
@@ -22,15 +26,15 @@
 
 + (HttpClient *) sharedClient;
 
-- (NSUInteger) requestWithUrl:(NSString *)urlString params:(NSDictionary *)params httpMethod:(NSString *)httpMethod delegate:(id<HttpClientDelegate>)delegate;
+- (NSUInteger) requestWithUrl:(NSString *)urlString params:(NSDictionary *)params httpMethod:(NSString *)httpMethod sueccess:(HttpResponseSuccess) success fail:(HttpResponseFail) fail;
 
-- (NSUInteger) requestWithUrl:(NSString *)urlString params:(NSDictionary *)params httpMethod:(NSString *)httpMethod delegate:(id<HttpClientDelegate>)delegate nTag:(NSInteger)nTag;
+- (NSUInteger) requestWithUrl:(NSString *)urlString params:(NSDictionary *)params httpMethod:(NSString *)httpMethod nTag:(NSInteger)nTag success:(HttpResponseSuccess) success fail:(HttpResponseFail) fail;
 
-- (NSUInteger) requestWithUrl:(NSString *)urlString params:(NSDictionary *)params httpMethod:(NSString *)httpMethod delegate:(id<HttpClientDelegate>)delegate sKey:(NSString *)sKey;
+- (NSUInteger) requestWithUrl:(NSString *)urlString params:(NSDictionary *)params httpMethod:(NSString *)httpMethod sKey:(NSString *) sKey success:(HttpResponseSuccess) success fail:(HttpResponseFail) fail;
 
-- (NSUInteger) requestWithUrl:(NSString *)urlString params:(NSDictionary *)params httpMethod:(NSString *)httpMethod delegate:(id<HttpClientDelegate>)delegate nTag:(NSInteger)nTag sKey:(NSString *)sKey;
+- (NSUInteger) requestWithUrl:(NSString *)urlString params:(NSDictionary *)params httpMethod:(NSString *)httpMethod nTag:(NSInteger)nTag sKey:(NSString *) sKey success:(HttpResponseSuccess) success fail:(HttpResponseFail) fail;
+
 
 - (BOOL)cancelRequestWithHashValue:(NSInteger)hashValue;
-
 
 @end
