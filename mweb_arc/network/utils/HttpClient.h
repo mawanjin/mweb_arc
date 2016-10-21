@@ -13,12 +13,12 @@ typedef void(^HttpResponseFail)(NSError *error);
 
 @class HttpRequestItem;
 
-@protocol HttpClientDelegate <NSObject>
-
-- (void) requestDidFinishWithData:(NSDictionary *)data urlString:(NSString *)urlString nTag:(NSInteger)nTag sKey:(NSString *)sKey;
-- (void) requestDidErrorWithData:(NSError *)error urlString:(NSString *)urlString nTag:(NSInteger)nTag sKey:(NSString *)sKey;
-
-@end
+//@protocol HttpClientDelegate <NSObject>
+//
+//- (void) requestDidFinishWithData:(NSDictionary *)data urlString:(NSString *)urlString nTag:(NSInteger)nTag sKey:(NSString *)sKey;
+//- (void) requestDidErrorWithData:(NSError *)error urlString:(NSString *)urlString nTag:(NSInteger)nTag sKey:(NSString *)sKey;
+//
+//@end
 
 @interface HttpClient : NSObject
 
@@ -34,7 +34,8 @@ typedef void(^HttpResponseFail)(NSError *error);
 
 - (NSUInteger) requestWithUrl:(NSString *)urlString params:(NSDictionary *)params httpMethod:(NSString *)httpMethod nTag:(NSInteger)nTag sKey:(NSString *) sKey success:(HttpResponseSuccess) success fail:(HttpResponseFail) fail;
 
-
 - (BOOL)cancelRequestWithHashValue:(NSInteger)hashValue;
+
+- (void) didFinishWithItem:(HttpRequestItem *)item error:(NSError *)error;
 
 @end

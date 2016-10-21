@@ -65,6 +65,7 @@
 }
 
 - (void) removeItem:(HttpRequestItem *)item{
+    
     NSUInteger hashValue = [item hash];
     id object = [_items objectForKey:@(hashValue)];
     if (object != nil) {

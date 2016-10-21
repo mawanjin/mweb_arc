@@ -11,24 +11,29 @@
 
 @implementation RpcAccount
 
+
 - (void)getAccountInfo{
+    
     [[HttpClient sharedClient] requestWithUrl:@"http://wwww.baidu.com" params:nil httpMethod:@"get" sueccess:^(id response) {
         NSLog(@"callback of getAccountInfo. response is %@",response);
     } fail:^(NSError *error) {
         NSLog(@"callback of getAccountInfo. response is %@",error);
     }];
+    
 }
 
-- (void)getAccountINFoByParams:(NSString *) url params:(NSDictionary *)params httpMethod:(NSString *)httpMethod delegate:(id<HttpClientDelegate>) delegate{
-
+- (void)getAccountInfoWithParams{
+    
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setObject:@"lala" forKey:@"name"];
+    
+    [[HttpClient sharedClient] requestWithUrl:@"http://wwww.baidu.com" params:params httpMethod:@"get" nTag:0 sKey:@"" success:^(id response) {
+        NSLog(@"goooood");
+    } fail:^(NSError *error) {
+        NSLog(@"baaaaad");
+    }];
+    
 }
 
-- (void) requestDidFinishWithData:(NSDictionary *)data urlString:(NSString *)urlString nTag:(NSInteger)nTag sKey:(NSString *)sKey{
-    NSLog(@"method requestDidFinishWithData() called.sKey=%@",sKey);
-}
-
-- (void) requestDidErrorWithData:(NSError *)error urlString:(NSString *)urlString nTag:(NSInteger)nTag sKey:(NSString *)sKey{
-    NSLog(@"method requestDidErrorWithData() called.sKey=%@",sKey);
-}
 
 @end

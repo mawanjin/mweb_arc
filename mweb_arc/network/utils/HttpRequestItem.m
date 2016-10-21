@@ -27,7 +27,7 @@
     
     __weak __typeof(self) weakSelf = self;
     //do request
-    NSURLSessionDataTask *dataTask = [manager dataTaskWithRequest:request completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
+    NSURLSessionDataTask *dataTask = [manager dataTaskWithRequest:request uploadProgress:nil downloadProgress:nil completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
         weakSelf.responseObject = responseObject;
         if(error){
             NSLog(@"Error: %@",error);

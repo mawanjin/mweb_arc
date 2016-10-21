@@ -11,4 +11,8 @@
 
 @interface IndexViewController : UIViewController
 
+@property (nonatomic,strong) RpcAccount *rpcAccount;
+
+- (IBAction)btnNetwork:(id)sender;
+
 @end

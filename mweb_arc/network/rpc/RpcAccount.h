@@ -9,9 +9,13 @@
 #import <Foundation/Foundation.h>
 #import "HttpClient.h"
 
-@interface RpcAccount : NSObject<HttpClientDelegate>
+@protocol RpcAccountDelegate <NSObject>
 
-- (void)getAccountInfo;
-- (void)getAccountINFoByParams:(NSString *) url params:(NSDictionary *)params httpMethod:(NSString *)httpMethod delegate:(id<HttpClientDelegate>) delegate;
+-(void) onReqAccountInfo;
 
+@end
+
+@interface RpcAccount:NSObject
+    - (void)getAccountInfo;
+    - (void)getAccountInfoWithParams;
 @end

@@ -17,7 +17,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     NSLog(@"IndexView present.");
-    [[[RpcAccount alloc] init] getAccountInfo];
+    self.rpcAccount = [[RpcAccount alloc] init];
     
 }
 
@@ -36,4 +36,8 @@
 }
 */
 
+- (IBAction)btnNetwork:(id)sender {
+    NSLog(@"click event btnNetwork called.");
+    [self.rpcAccount getAccountInfoWithParams];
+}
 @end
